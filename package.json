@@ -1,0 +1,13 @@
+{
+  "name": "wordle-solver",
+  "description": "An Alogrithm that thinks for you to help you solve wordle",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node wordle.js",
+    "wordle": "node wordle.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
