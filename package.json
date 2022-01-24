@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "wordle": "node wordle.js",
-    "start": "rimraf dist && parcel src/index.html",
-    "build": "rimraf docs && rimraf dist && parcel build src/index.html --dist-dir docs"
+    "start": "rimraf dist && parcel ./src/index.html",
+    "prebuild": "rimraf dist",
+    "build": "parcel build ./src/index.html --public-url ./",
+    "push": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "engines": {
     "node": ">=14"
@@ -15,6 +16,7 @@
     "@parcel/packager-raw-url": "^2.2.1",
     "@parcel/transformer-webmanifest": "^2.2.1",
     "parcel": "^2.2.1",
+    "push-dir": "^0.4.1",
     "rimraf": "^3.0.2"
   }
 }
