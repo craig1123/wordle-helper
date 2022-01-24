@@ -529,6 +529,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     const possibleWords = document.getElementById("possible-words");
     const wordCount = document.getElementById("word-count");
     const mostCommon = document.getElementById("most-common");
+    const bestWords = document.getElementById("best-words");
     let guessedWords = [];
     form.addEventListener("submit", onSubmit);
     restart.addEventListener("click", onRestart);
@@ -619,12 +620,24 @@ document.addEventListener("DOMContentLoaded", ()=>{
             item.textContent = word;
             possibleWords.appendChild(item);
         });
-        const commonLetters = mostCommonLetters(possibleWordles, guessedWords.join(""));
+        // Draw to most common letters
+        const commonLetters = mostCommonLetters(possibleWordles, guessedWords.flat().map((word)=>word.letter
+        ));
         commonLetters.forEach((word)=>{
             const item = document.createElement("li");
             const [key, value] = Object.entries(word)[0];
             item.textContent = `${key}: ${value}`;
             mostCommon.appendChild(item);
+        });
+        // draw to "try one of these"
+        const topCommonLetters = commonLetters.slice(0, 5).map((word)=>Object.keys(word)[0]
+        );
+        let theBest = getBestWord(topCommonLetters);
+        if (theBest.length === 0) theBest = getBestWord(topCommonLetters.slice(0, 4));
+        theBest.forEach((word)=>{
+            const item = document.createElement("li");
+            item.textContent = word;
+            bestWords.appendChild(item);
         });
         return false;
     }
@@ -640,6 +653,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         while(possibleWords.firstChild)possibleWords.removeChild(possibleWords.lastChild);
         // remove most common letters
         while(mostCommon.firstChild)mostCommon.removeChild(mostCommon.lastChild);
+        // remove best words
+        while(bestWords.firstChild)bestWords.removeChild(bestWords.lastChild);
     }
 });
 function wordle(input, guessedWords) {
@@ -710,15 +725,13 @@ function mostCommonLetters(possibles, used) {
         })
     );
 }
-// uncomment below and enter up to 5 letters. It'll spit out the best word to try next
-// const bestWordsToTry = getBestWord(['', '', '', '', '']);
-// console.log('best words to try next:', bestWordsToTry);
 // console.log('Best Word in possible words:', isBestWordAPossible(possibleWords, bestWordsToTry));
 // use this if you want to find a word to use
-function getBestWord(topLetters) {
-    return allWords.slice().filter((word)=>{
+function getBestWord(topCommonLetters) {
+    if (topCommonLetters.length < 4) return [];
+    return allWords.filter((word)=>{
         let hasAll = true;
-        topLetters.forEach((letter)=>{
+        topCommonLetters.forEach((letter)=>{
             if (hasAll && !word.includes(letter)) hasAll = false;
         });
         return hasAll;

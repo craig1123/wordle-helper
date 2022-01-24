@@ -15,7 +15,7 @@
     <meta property="og:title" content="Wordle - A daily word game" />
     <meta
       property="og:description"
-      content="A wordle helper. Enter your guesses and you'll receive all the possible words and the next best words to guess."
+      content="Optimize your wordle game. Enter your guesses and you'll receive all the possible words and the next best words to guess."
     />
     <meta name="theme-color" content="#6aaa64" />
     <link
@@ -36,13 +36,12 @@
       href="./favicon-16x16.png"
     />
     <link rel="manifest" href="./site.webmanifest" />
-    <title>Wordle Solver</title>
+    <title>Wordle Helper</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header>
-      <h1>WORDLE SOLVER</h1>
-      <p>Optimize your wordle game</p>
+      <h1>WORDLE HELPER</h1>
     </header>
     <p class="description">Press letter box to change color</p>
     <div class="board-container">
@@ -100,13 +99,26 @@
           <h4>Past Guesses</h4>
         </div>
         <div>
-          <h4># of possible words has this letter</h4>
-          <ul id="most-common"></ul>
+          <h4 id="word-count">Possible Words</h4>
+          <ul id="possible-words"></ul>
         </div>
       </div>
-      <div class="possible-words-container">
-        <h4 id="word-count">Possible Words</h4>
-        <ul id="possible-words"></ul>
+      <div class="right-container">
+        <div class="most-common-container">
+          <h4>Most common letters in possible words</h4>
+          <ul id="most-common"></ul>
+        </div>
+        <div>
+          <h4>Try one of these words</h4>
+          <ul id="best-words">
+            <li>orate</li>
+            <li>later</li>
+            <li>laser</li>
+            <li>earns</li>
+            <li>trace</li>
+            <li>roast</li>
+          </ul>
+        </div>
       </div>
     </div>
     <script type="module" src="wordle.js"></script>
