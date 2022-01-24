@@ -6,7 +6,7 @@
   "scripts": {
     "start": "rimraf dist && parcel ./src/index.html",
     "prebuild": "rimraf dist",
-    "build": "parcel build ./src/index.html --public-url ./",
+    "build": "parcel build ./src/index.html --public-url ./ --dist-dir docs",
     "push": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "engines": {
