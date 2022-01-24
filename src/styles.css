@@ -108,14 +108,14 @@ form button {
 
 .guesses-container {
   border-right: 1px solid var(--gray1);
-  max-height: 500px;
+  max-height: 515px;
   padding: 5px;
   overflow: auto;
   width: 50%;
 }
 
 .guesses {
-  height: 280px;
+  height: 295px;
   width: 100%;
   display: grid;
   grid-template-rows: repeat(6, 1fr);
@@ -126,6 +126,7 @@ form button {
   align-items: center;
   background: var(--absent);
   border: none;
+  box-sizing: border-box;
   color: #fff;
   display: inline-flex;
   font-size: 2rem;
@@ -153,14 +154,14 @@ form button {
 }
 
 .right-container {
-  max-height: 500px;
+  max-height: 515px;
   overflow: auto;
   padding: 5px;
   width: 50%;
 }
 
 .most-common-container {
-  height: 280px;
+  height: 295px;
   width: 100%;
 }
 

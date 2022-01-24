@@ -44,6 +44,20 @@
     <link rel="manifest" href="./site.webmanifest" />
     <title>Wordle Helper</title>
     <link rel="stylesheet" href="styles.css" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-FL3GTHY9BN"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-FL3GTHY9BN");
+    </script>
   </head>
   <body>
     <header>
@@ -111,13 +125,12 @@
       </div>
       <div class="right-container">
         <div class="most-common-container">
-          <h4>Most common letters in possible words</h4>
+          <h4>Most common letters</h4>
           <ul id="most-common"></ul>
         </div>
         <div>
           <h4>Try one of these words</h4>
           <ul id="best-words">
-            <li>orate</li>
             <li>later</li>
             <li>laser</li>
             <li>earns</li>

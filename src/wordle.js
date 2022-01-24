@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     letterEl.addEventListener("click", onClick);
   }
 
+  draw([]);
+
   function onKeyUp(e) {
     const { value, id } = e.target;
 
@@ -60,7 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
     while (possibleWords.firstChild) {
       possibleWords.removeChild(possibleWords.lastChild);
     }
+    firstLetter.focus();
     resetForm();
+    draw([]);
   }
 
   function onClick(e) {
@@ -96,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!value) {
         break;
       }
-      word.push({ letter: value, valid: Number(dataset.valid) });
+      word.push({ letter: value.toLowerCase(), valid: Number(dataset.valid) });
     }
 
     if (word.length !== 5) {
@@ -123,15 +127,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resetForm();
 
+    draw(word);
+    return false;
+  }
+
+  function draw(word) {
     const possibleWordles = wordle(word, guessedWords);
     const possibleWordlesLength = possibleWordles.length;
-    wordCount.textContent = `Total Possible Words: ${possibleWordlesLength}`;
+    wordCount.textContent = `Possible Words: ${possibleWordlesLength}`;
 
-    possibleWordles.forEach((word) => {
+    if (possibleWordlesLength === 1) {
       const item = document.createElement("li");
-      item.textContent = word;
+      item.textContent = possibleWordles[0];
+      item.style.fontSize = "30px";
+      item.style.fontWeight = "bold";
+      item.style.textTransform = "uppercase";
+      item.style.textAlign = "center";
       possibleWords.appendChild(item);
-    });
+    } else {
+      possibleWordles.forEach((word) => {
+        const item = document.createElement("li");
+        item.textContent = word;
+        possibleWords.appendChild(item);
+      });
+    }
 
     // Draw to most common letters
     const commonLetters = mostCommonLetters(
@@ -158,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
       item.textContent = word;
       bestWords.appendChild(item);
     });
-    return false;
   }
 
   function resetForm() {
@@ -168,7 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
       form.elements[i].dataset.valid = "0";
     }
     form.reset();
-    firstLetter.focus();
     // remove possible words
     while (possibleWords.firstChild) {
       possibleWords.removeChild(possibleWords.lastChild);
@@ -209,7 +226,6 @@ function wordle(input, guessedWords) {
         .filter(Boolean)
     )
     .flat();
-
   words
     .filter((word) => {
       // filter out all the words that include the bad guessed letters
@@ -223,7 +239,7 @@ function wordle(input, guessedWords) {
     })
     .forEach((word) => {
       // figure out if it should be pushed
-      let pushIt = false;
+      let pushIt = true; // starts with true as it'll add all lettres
       for (let i = 0; i < input.length; i++) {
         const el = input[i];
         const letterIsInWord = word.includes(el.letter);
@@ -243,6 +259,9 @@ function wordle(input, guessedWords) {
           break;
         } else if (el.valid === 0 && !letterIsInWord) {
           pushIt = true;
+        } else if (el.valid === 0 && letterIsInWord) {
+          pushIt = false;
+          break;
         }
       }
 
