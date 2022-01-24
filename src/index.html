@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta
+      name="description"
+      content="A wordle helper. Enter your guesses and you'll receive all the possible words and the next best words to guess."
+    />
+    <meta property="og:url" content="https://www.powerlanguage.co.uk/wordle/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Wordle - A daily word game" />
+    <meta
+      property="og:description"
+      content="A wordle helper. Enter your guesses and you'll receive all the possible words and the next best words to guess."
+    />
+    <meta name="theme-color" content="#6aaa64" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon-16x16.png"
+    />
+    <link rel="manifest" href="./site.webmanifest" />
+    <title>Wordle Solver</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>WORDLE SOLVER</h1>
+      <p>Optimize your wordle game</p>
+    </header>
+    <p class="description">Press letter box to change color</p>
+    <div class="board-container">
+      <div class="board">
+        <form id="form">
+          <div class="row">
+            <input
+              class="tile"
+              data-valid="0"
+              type="text"
+              maxlength="1"
+              autofocus
+              id="letter1"
+            />
+            <input
+              class="tile"
+              data-valid="0"
+              type="text"
+              maxlength="1"
+              id="letter2"
+            />
+            <input
+              class="tile"
+              data-valid="0"
+              type="text"
+              maxlength="1"
+              id="letter3"
+            />
+            <input
+              class="tile"
+              data-valid="0"
+              type="text"
+              maxlength="1"
+              id="letter4"
+            />
+            <input
+              class="tile"
+              data-valid="0"
+              type="text"
+              maxlength="1"
+              id="letter5"
+            />
+          </div>
+          <div class="btn-container">
+            <button id="restart" type="button">Restart</button>
+            <button class="enter-btn" type="submit">Enter</button>
+          </div>
+        </form>
+        <br />
+      </div>
+    </div>
+    <div class="lower-container">
+      <div class="guesses-container">
+        <div class="guesses" id="guesses">
+          <h4>Past Guesses</h4>
+        </div>
+        <div>
+          <h4># of possible words has this letter</h4>
+          <ul id="most-common"></ul>
+        </div>
+      </div>
+      <div class="possible-words-container">
+        <h4 id="word-count">Possible Words</h4>
+        <ul id="possible-words"></ul>
+      </div>
+    </div>
+    <script type="module" src="wordle.js"></script>
+  </body>
+</html>

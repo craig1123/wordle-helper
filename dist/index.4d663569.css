@@ -1,0 +1,174 @@
+:root {
+  --absent: #787c7e;
+  --present: #c9b458;
+  --correct: #6aaa64;
+  --gray1: #d3d6da;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: #fff;
+  color: #1a1a1b;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+header {
+  margin: auto;
+  text-align: center;
+  width: 375px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  column-count: 2;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  ul {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1140px) {
+  ul {
+    column-count: 4;
+  }
+}
+
+header p {
+  font-size: 24px;
+}
+
+h1 {
+  border-bottom: 1px solid var(--gray1);
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5px;
+}
+
+.guess-row {
+  margin: auto;
+  width: 175px;
+}
+
+.description {
+  margin: 0px auto 5px;
+  width: 350px;
+}
+
+.board-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.board {
+  width: 350px;
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
+  grid-gap: 5px;
+}
+
+form button {
+  height: 35px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.enter-btn {
+  background-color: #f5793a;
+  color: #fff;
+  border-color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  width: 120px;
+}
+
+.lower-container {
+  display: flex;
+}
+
+.lower-container h4 {
+  margin-bottom: 5px;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.guesses-container {
+  border-right: 1px solid var(--gray1);
+  width: 50%;
+  padding: 5px;
+}
+
+.guesses {
+  height: 235px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 5px;
+}
+
+.tile {
+  align-items: center;
+  background: var(--absent);
+  border: none;
+  color: #fff;
+  display: inline-flex;
+  font-size: 2rem;
+  font-weight: bold;
+  height: 60px;
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+  user-select: none;
+  vertical-align: middle;
+  width: 60px;
+}
+
+.present {
+  background: var(--present);
+}
+.correct {
+  background: var(--correct);
+}
+
+.small-tile {
+  font-size: 1rem;
+  height: 30px;
+  width: 30px;
+}
+
+.possible-words-container {
+  padding: 5px;
+  width: 50%;
+}
+
+#possible-words {
+  overflow: auto;
+}
+
+/*# sourceMappingURL=index.4d663569.css.map */

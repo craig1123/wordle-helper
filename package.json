@@ -4,10 +4,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node wordle.js",
-    "wordle": "node wordle.js"
+    "wordle": "node wordle.js",
+    "start": "rimraf dist && parcel src/index.html",
+    "build": "rimraf dist && parcel build src/index.html"
   },
   "engines": {
     "node": ">=14"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.2.1",
+    "@parcel/transformer-webmanifest": "^2.2.1",
+    "parcel": "^2.2.1",
+    "rimraf": "^3.0.2"
   }
 }
