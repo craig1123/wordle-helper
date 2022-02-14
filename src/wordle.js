@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     letterEl.addEventListener("click", onClick);
   }
 
-  draw([]);
+  draw();
 
   function onKeyUp(e) {
     const { value, id } = e.target;
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     firstLetter.focus();
     resetForm();
-    draw([]);
+    draw();
   }
 
   function onClick(e) {
@@ -107,8 +107,18 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    guessedWords.push(word);
+    drawGuessRow();
+    resetForm();
+    draw();
+    return false;
+  }
+
+  function drawGuessRow() {
     const row = document.createElement("div");
     row.className = "row guess-row";
+    const word = guessedWords[guessedWords.length - 1];
+
     word.forEach((el) => {
       const tile = document.createElement("div");
       let validClass = "";
@@ -122,20 +132,25 @@ document.addEventListener("DOMContentLoaded", () => {
       tile.textContent = el.letter;
       row.appendChild(tile);
     });
-    guessedWords.push(word);
+
+    // click row to remove guess
+    row.onclick = function () {
+      const index =
+        Array.prototype.indexOf.call(this.parentElement.children, this) - 1;
+      this.parentElement.removeChild(this);
+      resetWords();
+      guessedWords.splice(index, 1);
+      draw();
+    };
     guesses.appendChild(row);
-
-    resetForm();
-
-    draw(word);
-    return false;
   }
 
-  function draw(word) {
-    const possibleWordles = wordle(word, guessedWords);
+  function draw() {
+    const possibleWordles = wordle(guessedWords);
     const possibleWordlesLength = possibleWordles.length;
     wordCount.textContent = `Possible Words: ${possibleWordlesLength}`;
 
+    // correct word
     if (possibleWordlesLength === 1) {
       const item = document.createElement("li");
       item.textContent = possibleWordles[0];
@@ -186,6 +201,10 @@ document.addEventListener("DOMContentLoaded", () => {
       form.elements[i].dataset.valid = "0";
     }
     form.reset();
+    resetWords();
+  }
+
+  function resetWords() {
     // remove possible words
     while (possibleWords.firstChild) {
       possibleWords.removeChild(possibleWords.lastChild);
@@ -201,9 +220,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function wordle(input, guessedWords) {
-  let possibleWords = [];
+/**
+ * Give an array of array of guessed letters, return the possible words
+ * @param {array} guessedWords
+ * @returns string[] possible words
+ */
+function wordle(guessedWords) {
+  const guessedWordsLength = guessedWords.length;
+  if (guessedWordsLength === 0) {
+    return words;
+  }
 
+  let possibleWords = [];
   const incorrectGuessedLetters = guessedWords
     .flat()
     .map((word) => (word.valid === 0 ? word : null))
@@ -226,6 +254,7 @@ function wordle(input, guessedWords) {
         .filter(Boolean)
     )
     .flat();
+
   words
     .filter((word) => {
       // filter out all the words that include the bad guessed letters
@@ -238,33 +267,7 @@ function wordle(input, guessedWords) {
       return hasGuessedLetter;
     })
     .forEach((word) => {
-      // figure out if it should be pushed
-      let pushIt = true; // starts with true as it'll add all lettres
-      for (let i = 0; i < input.length; i++) {
-        const el = input[i];
-        const letterIsInWord = word.includes(el.letter);
-        if (el.valid === 1 && letterIsInWord) {
-          if (word[i] === el.letter) {
-            pushIt = false;
-            break; // yellow can't the letter in the exact spot
-          }
-          pushIt = true;
-        } else if (el.valid === 2 && !letterIsInWord) {
-          pushIt = false;
-          break;
-        } else if (el.valid === 2 && letterIsInWord && word[i] === el.letter) {
-          pushIt = true; // all words have to have the letter in the exact place
-        } else if (el.valid === 2 && letterIsInWord && word[i] !== el.letter) {
-          pushIt = false;
-          break;
-        } else if (el.valid === 0 && !letterIsInWord) {
-          pushIt = true;
-        } else if (el.valid === 0 && letterIsInWord) {
-          pushIt = false;
-          break;
-        }
-      }
-
+      const pushIt = shouldItPush(word, guessedWords, guessedWordsLength);
       // word needs to have all yellow and green letters in word
       let hasAll = true;
       validLetters.forEach(({ valid, letter, index }) => {
@@ -280,6 +283,28 @@ function wordle(input, guessedWords) {
     });
 
   return possibleWords;
+}
+
+function shouldItPush(word, guessedWords, guessedWordsLength) {
+  // figure out if it should be pushed
+  for (let curIndex = 0; curIndex < guessedWordsLength; curIndex++) {
+    const mostRecentWord = guessedWords[curIndex];
+    for (let i = 0; i < mostRecentWord.length; i++) {
+      const el = mostRecentWord[i];
+      const letterIsInWord = word.includes(el.letter);
+      if (el.valid === 1 && letterIsInWord && word[i] === el.letter) {
+        return false; // yellow can't the letter in the exact spot
+      } else if (el.valid === 2 && !letterIsInWord) {
+        return false;
+      } else if (el.valid === 2 && letterIsInWord && word[i] !== el.letter) {
+        return false; // all words have to have the letter in the exact place
+      } else if (el.valid === 0 && letterIsInWord) {
+        return false;
+      }
+    }
+  }
+
+  return true; // starts with true as it'll add all lettres
 }
 
 function mostCommonLetters(possibles, used) {
@@ -303,8 +328,6 @@ function mostCommonLetters(possibles, used) {
     .map((letter) => ({ [letter]: mapOfLetters[letter] }));
 }
 
-// console.log('Best Word in possible words:', isBestWordAPossible(possibleWords, bestWordsToTry));
-
 // use this if you want to find a word to use
 function getBestWord(topCommonLetters) {
   if (topCommonLetters.length < 4) {
@@ -319,14 +342,4 @@ function getBestWord(topCommonLetters) {
     });
     return hasAll;
   });
-}
-
-function isBestWordAPossible(possibles, bests) {
-  const morePossible = [];
-  possibles.forEach((word) => {
-    if (bests.includes(word)) {
-      morePossible.push(word);
-    }
-  });
-  return morePossible;
 }
